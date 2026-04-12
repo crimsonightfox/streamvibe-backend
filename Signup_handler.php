@@ -1,6 +1,17 @@
 <?php
 include 'db.php';
+
+// CORS headers — allow InfinityFree frontend to reach Render backend
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
 header('Content-Type: text/plain');
+
+// GET request = wake-up ping (keeps Render from sleeping)
+if ($_SERVER['REQUEST_METHOD'] === 'GET' || $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    echo 'ok';
+    exit;
+}
 
 $first_name = trim($_POST['first_name'] ?? '');
 $last_name  = trim($_POST['last_name']  ?? '');
