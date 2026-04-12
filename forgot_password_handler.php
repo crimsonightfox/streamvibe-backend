@@ -1,8 +1,10 @@
 <?php
 require_once 'db.php';
-require_once __DIR__ . '/vendor/autoload.php';  // PHPMailer via Composer
-
 header('Content-Type: text/plain');
+
+require_once __DIR__ . '/PHPMailer/src/Exception.php';
+require_once __DIR__ . '/PHPMailer/src/PHPMailer.php';
+require_once __DIR__ . '/PHPMailer/src/SMTP.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -11,10 +13,7 @@ use PHPMailer\PHPMailer\Exception;
 $email  = $_POST['email']  ?? '';
 $action = $_POST['action'] ?? '';
 
-if (!$email || !$action) {
-    echo "fail: missing data";
-    exit;
-}
+if (!$email || !$action) { echo "fail: missing data"; exit; }
 
 // ---------------- HELPER: FIND USER TABLE ----------------
 function findUser($conn, $email) {
@@ -57,11 +56,9 @@ function sendOtpEmail($toEmail, $otp) {
 if ($action === 'send_otp') {
     $otp     = random_int(100000, 999999);
     $expires = date('Y-m-d H:i:s', time() + 600);
-
     $stmt = $conn->prepare("UPDATE $table SET otp = ?, otp_expires = ? WHERE Email = ?");
     $stmt->bind_param("sss", $otp, $expires, $email);
     $stmt->execute();
-
     $result = sendOtpEmail($email, $otp);
     echo ($result === true) ? "success" : "fail: $result";
     exit;
@@ -74,7 +71,6 @@ if ($action === 'verify_otp') {
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $row = $stmt->get_result()->fetch_assoc();
-
     if ($row && $row['otp'] === $otp && strtotime($row['otp_expires']) > time()) {
         echo "success";
     } else {
@@ -87,7 +83,6 @@ if ($action === 'verify_otp') {
 if ($action === 'reset_password') {
     $newPass = $_POST['new_password'] ?? '';
     if (!$newPass) { echo "fail: missing new password"; exit; }
-
     $stmt = $conn->prepare("UPDATE $table SET Password = ?, otp = NULL, otp_expires = NULL WHERE Email = ?");
     $stmt->bind_param("ss", $newPass, $email);
     $stmt->execute();
