@@ -2,6 +2,8 @@
 // This file lives on RENDER - handles email check & password reset only
 require_once 'db.php';
 header('Content-Type: text/plain');
+header('Cache-Control: no-store, no-cache, must-revalidate');
+header('Pragma: no-cache');
 
 $email  = $_POST['email']  ?? '';
 $action = $_POST['action'] ?? '';
