@@ -2,14 +2,13 @@ FROM php:8.2-apache
 
 RUN docker-php-ext-install mysqli
 
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# Install PHPMailer directly (no Composer needed)
+RUN mkdir -p /var/www/html/PHPMailer/src && \
+    curl -sL https://raw.githubusercontent.com/PHPMailer/PHPMailer/master/src/PHPMailer.php -o /var/www/html/PHPMailer/src/PHPMailer.php && \
+    curl -sL https://raw.githubusercontent.com/PHPMailer/PHPMailer/master/src/SMTP.php -o /var/www/html/PHPMailer/src/SMTP.php && \
+    curl -sL https://raw.githubusercontent.com/PHPMailer/PHPMailer/master/src/Exception.php -o /var/www/html/PHPMailer/src/Exception.php
 
 COPY . /var/www/html/
-
-# Install PHPMailer via Composer
-WORKDIR /var/www/html
-RUN composer require phpmailer/phpmailer
 
 RUN chown -R www-data:www-data /var/www/html
 
