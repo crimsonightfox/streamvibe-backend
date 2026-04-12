@@ -2,17 +2,9 @@
 session_start();
 header('Content-Type: text/plain');
 
-$conn = new mysqli(
-    "sql200.infinityfree.com",
-    "if0_40980290",
-    "md7vQo22wr",
-    "if0_40980290_StreamVibe_db"
-);
+require_once 'db.php';
 
-if ($conn->connect_error) {
-    echo "server_error";
-    exit;
-}
+
 
 $email = $_POST['email'] ?? '';
 $pass  = $_POST['password'] ?? '';
@@ -42,7 +34,6 @@ function checkTable($conn, $table, $email, $pass) {
 $result = checkTable($conn, "viewer_db", $email, $pass);
 
 if ($result["status"] === "success_viewer_db") {
-    session_start();
     $_SESSION['username'] = $result["username"];
     $_SESSION['role']     = 'viewer';
     echo "success_viewer_db";
@@ -59,7 +50,6 @@ if ($result["status"] === "not_found") {
     $result = checkTable($conn, "streamer_db", $email, $pass);
 
     if ($result["status"] === "success_streamer_db") {
-        session_start();
         $_SESSION['username'] = $result["username"];
         $_SESSION['role']     = 'streamer';
         echo "success_streamer_db";
