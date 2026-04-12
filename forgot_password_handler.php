@@ -1,13 +1,11 @@
 <?php
 require_once 'db.php';
+require_once __DIR__ . '/vendor/autoload.php';  // PHPMailer via Composer
+
 header('Content-Type: text/plain');
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
 
 // ---------------- INPUTS ----------------
 $email  = $_POST['email']  ?? '';
@@ -24,17 +22,13 @@ function findUser($conn, $email) {
         $stmt = $conn->prepare("SELECT Email FROM $table WHERE Email = ? LIMIT 1");
         $stmt->bind_param("s", $email);
         $stmt->execute();
-        $res = $stmt->get_result();
-        if ($res->num_rows === 1) return $table;
+        if ($stmt->get_result()->num_rows === 1) return $table;
     }
     return false;
 }
 
 $table = findUser($conn, $email);
-if (!$table) {
-    echo "fail: email not found";
-    exit;
-}
+if (!$table) { echo "fail: email not found"; exit; }
 
 // ---------------- HELPER: SEND OTP EMAIL ----------------
 function sendOtpEmail($toEmail, $otp) {
@@ -76,7 +70,6 @@ if ($action === 'send_otp') {
 // ---------------- ACTION: VERIFY OTP ----------------
 if ($action === 'verify_otp') {
     $otp  = trim($_POST['otp'] ?? '');
-
     $stmt = $conn->prepare("SELECT otp, otp_expires FROM $table WHERE Email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
