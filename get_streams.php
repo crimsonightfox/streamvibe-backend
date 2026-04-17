@@ -14,7 +14,7 @@ if (mysqli_connect_error()) {
     exit;
 }
 
-$result = $conn->query("SELECT * FROM streams WHERE status='live' ORDER BY started_at DESC");
+$result = $conn->query("SELECT stream_id, title, category, description, status, started_at FROM streams WHERE status='live' ORDER BY started_at DESC");
 
 if (!$result) { echo json_encode([]); exit; }
 
