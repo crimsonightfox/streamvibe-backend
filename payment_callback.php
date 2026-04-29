@@ -15,7 +15,7 @@ define('PAYPAL_CLIENT_ID', 'AZD_T8Q6SvdsVHhgrUfx4mrvcw-8bqrd0UlEAHySELinucR9Irn9
 define('PAYPAL_SECRET',    'EC9MQBF5wHg26h7JIIexpHSLA6-I2k2Ck-izviA0-UhBSPMps4lLZ2MjOh5KS8k-5Ub1FE8sRj-GYKMY');
 define('PAYPAL_BASE',      'https://api-m.sandbox.paypal.com');
 define('MAX_WALLET',       999999);
-define('FRONTEND_URL',     'https://streamvibe.free.nf/Viewer_Dashboard.html?i=1');
+define('FRONTEND_URL', (getenv('FRONTEND_URL') ?: 'https://streamvibe.free.nf') . '/Viewer_Dashboard.html?i=1');
 
 // ── GET PARAMS ────────────────────────────────────────────────────────────────
 // PayPal sends: token (=order ID), PayerID, and our custom params

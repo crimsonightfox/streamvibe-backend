@@ -19,8 +19,8 @@ define('MAX_COINS_PER_BUY', 5000);
 define('MAX_WALLET',        999999);
 define('DAILY_LIMIT',       60000);
 define('COOLDOWN_MINUTES',  5);
-define('RETURN_URL',        'https://streamvibe.free.nf/Viewer_Dashboard.html?i=1');
-define('CANCEL_URL',        'https://streamvibe.free.nf/Viewer_Dashboard.html?i=1&coin_result=cancelled');
+define('RETURN_URL', (getenv('FRONTEND_URL') ?: 'https://streamvibe.free.nf') . '/Viewer_Dashboard.html?i=1');
+define('CANCEL_URL', (getenv('FRONTEND_URL') ?: 'https://streamvibe.free.nf') . '/Viewer_Dashboard.html?i=1&coin_result=cancelled');
 
 // ── INPUT ─────────────────────────────────────────────────────────────────────
 $username  = trim($_POST['username'] ?? '');
