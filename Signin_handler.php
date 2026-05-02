@@ -39,7 +39,7 @@ $result = checkTable($conn, "viewer_db", $email, $pass);
 if ($result["status"] === "success_viewer_db") {
     $_SESSION['username'] = $result["username"];
     $_SESSION['role']     = 'viewer';
-    echo "success_viewer_db";
+    echo "success_viewer_db|" . $result["username"];
     exit;
 }
 
@@ -55,7 +55,7 @@ if ($result["status"] === "not_found") {
     if ($result["status"] === "success_streamer_db") {
         $_SESSION['username'] = $result["username"];
         $_SESSION['role']     = 'streamer';
-        echo "success_streamer_db";
+        echo "success_streamer_db|" . $result["username"];
         exit;
     }
 
