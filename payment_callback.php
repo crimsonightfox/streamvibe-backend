@@ -1,14 +1,12 @@
 <?php
 // payment_callback.php — Captures the PayPal payment after user approves
-// PayPal redirects to return_url with ?token=ORDER_ID&PayerID=xxx
-// We then capture it server-side and credit the coins
 session_start();
-include 'db.php';
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(200); exit(); }
+include 'db.php';
 
 // ── CONFIG ────────────────────────────────────────────────────────────────────
 define('PAYPAL_CLIENT_ID', 'AZD_T8Q6SvdsVHhgrUfx4mrvcw-8bqrd0UlEAHySELinucR9Irn9hYOZG6p0dW7moC116OAwtFOnpiJf');
